@@ -2,45 +2,61 @@
 
 /* ─────────────────────────────────────────────────────────────
    Paletas curadas. El valor elegido en Sanity (siteSettings.theme)
-   se aplica como data-theme en <html>. Tres combinaciones pensadas:
-   nada de degradados ni transparencias — tinta, papel cálido, líneas
-   de 1px y un único acento apagado.
+   se aplica como data-theme en <html>. Cuatro combinaciones, cada
+   una cubre una personalidad de venta distinta: nada de degradados
+   ni transparencias — tinta, papel, líneas de 1px y un único acento.
    ───────────────────────────────────────────────────────────── */
 :root,
 [data-theme="verde"] {
-  --t-ink: #252f21;      /* verde tinta (evoca al SIN) */
+  /* Institucional cercano: evoca al SIN */
+  --t-ink: #252f21;
   --t-body: #343a40;
   --t-paper: #f8f9fa;
   --t-card: #ffffff;
   --t-line: #e2e5dc;
   --t-sage: #d8e9d2;
-  --t-accent: #b0563b;   /* terracota */
+  --t-accent: #b0563b;
   --t-onaccent: #ffffff;
   --t-onink: #f4f2ee;
 }
 
-[data-theme="navy"] {
-  --t-ink: #1c2b3a;
-  --t-body: #3a4656;
-  --t-paper: #faf8f4;
+[data-theme="azul"] {
+  /* Sobrio corporativo: azul #002C5C, fondo blanco, monocromático */
+  --t-ink: #002c5c;
+  --t-body: #37414e;
+  --t-paper: #ffffff;
   --t-card: #ffffff;
-  --t-line: #e3dfd6;
-  --t-sage: #efe9dc;
-  --t-accent: #a87e3d;   /* dorado apagado */
+  --t-line: #e4e7eb;
+  --t-sage: #edf1f7;
+  --t-accent: #002c5c;
   --t-onaccent: #ffffff;
-  --t-onink: #f4f2ee;
+  --t-onink: #f4f6f9;
 }
 
-[data-theme="tinta"] {
-  --t-ink: #1a1a18;
-  --t-body: #3e3d3a;
-  --t-paper: #f6f2ea;
-  --t-card: #fffdf9;
-  --t-line: #e4ddcf;
-  --t-sage: #f0eadc;
-  --t-accent: #8c6a3f;
+[data-theme="grafito"] {
+  /* Moderno minimal: blanco y negro tipográfico */
+  --t-ink: #16181d;
+  --t-body: #3e4046;
+  --t-paper: #ffffff;
+  --t-card: #ffffff;
+  --t-line: #e8e8e8;
+  --t-sage: #f3f3f3;
+  --t-accent: #16181d;
   --t-onaccent: #ffffff;
-  --t-onink: #f4f2ee;
+  --t-onink: #f4f4f4;
+}
+
+[data-theme="dorado"] {
+  /* Tradicional elegante: crema, tinta cálida y dorado */
+  --t-ink: #26221b;
+  --t-body: #4a443a;
+  --t-paper: #faf7ef;
+  --t-card: #fffdf8;
+  --t-line: #e4dcc8;
+  --t-sage: #f2ead8;
+  --t-accent: #9a7b3f;
+  --t-onaccent: #ffffff;
+  --t-onink: #f7f3e8;
 }
 
 /* El mapping va "inline": las utilidades referencian la variable en
