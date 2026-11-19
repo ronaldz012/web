@@ -1,0 +1,49 @@
+---
+import type { SiteSettings, SiteData } from "../lib/sanity";
+
+interface Props {
+  settings: SiteSettings;
+  cases: SiteData["cases"];
+  testimonials: SiteData["testimonials"];
+}
+
+const { settings, cases, testimonials } = Astro.props;
+const label = settings.labels?.results ?? "Resultados";
+---
+
+{
+  (cases.length > 0 || testimonials.length > 0) && (
+    <section id="resultados" class="border-b border-line">
+      <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+        <h2 class="font-display text-2xl font-medium text-ink sm:text-3xl">{label}</h2>
+
+        {cases.length > 0 && (
+          <ul class="mt-8 space-y-6">
+            {cases.map((c) => (
+              <li class="border-l-2 border-accent pl-5">
+                <h3 class="font-display text-lg font-medium text-ink">{c.title}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-body">{c.situation}</p>
+                <p class="mt-2 text-sm font-medium text-ink">→ {c.result}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {testimonials.length > 0 && (
+          <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {testimonials.map((t) => (
+              <li class="border border-line bg-card p-6">
+                <blockquote class="font-display text-lg italic leading-relaxed text-ink">
+                  “{t.quote}”
+                </blockquote>
+                <p class="mt-4 text-xs font-medium uppercase tracking-[0.12em] text-body/60">
+                  {t.authorDescriptor}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  )
+}

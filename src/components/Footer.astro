@@ -1,0 +1,72 @@
+---
+import type { SiteSettings } from "../lib/sanity";
+
+interface Props {
+  settings: SiteSettings;
+}
+
+const { settings } = Astro.props;
+const year = new Date().getFullYear();
+const social = settings.contact?.social ?? [];
+---
+
+<footer class="bg-ink">
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <p class="font-display text-lg font-semibold text-onink">{settings.name}</p>
+        {
+          settings.sectorTitle && (
+            <p class="mt-1 text-xs uppercase tracking-[0.14em] text-onink/60">
+              {settings.sectorTitle}
+            </p>
+          )
+        }
+      </div>
+
+      <div class="space-y-1 text-sm">
+        {
+          settings.contact?.email && (
+            <a
+              href={`mailto:${settings.contact.email}`}
+              class="block text-onink/80 transition-colors hover:text-onink"
+            >
+              {settings.contact.email}
+            </a>
+          )
+        }
+        {settings.contact?.phone && <p class="text-onink/80">{settings.contact.phone}</p>}
+      </div>
+
+      {
+        social.length > 0 && (
+          <ul class="flex gap-5 text-sm">
+            {social.map((s) => (
+              <li>
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-onink/80 transition-colors hover:text-onink"
+                >
+                  {s.platform}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    <div class="mt-10 border-t border-onink/10 pt-6">
+      <p class="text-xs text-onink/50">© {year} {settings.name}</p>
+      {
+        settings.footerNote && (
+          <p class="mt-2 max-w-2xl text-xs leading-relaxed text-onink/50">
+            {settings.footerNote}
+          </p>
+        )
+      }
+    </div>
+  </div>
+</footer>

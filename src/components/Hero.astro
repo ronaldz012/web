@@ -1,0 +1,70 @@
+---
+import { urlFor, waLink, type SiteSettings } from "../lib/sanity";
+
+interface Props {
+  settings: SiteSettings;
+}
+
+const { settings } = Astro.props;
+const wa = settings.contact?.whatsapp
+  ? waLink(settings.contact.whatsapp, "Hola, quiero consultar por sus servicios.")
+  : null;
+---
+
+<section id="inicio" class="border-b border-line">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      {
+        settings.sectorTitle && (
+          <p class="text-xs font-medium uppercase tracking-[0.18em] text-body/60">
+            {settings.sectorTitle}
+          </p>
+        )
+      }
+      <h1 class="mt-4 text-balance font-display text-4xl font-medium leading-[1.08] text-ink sm:text-5xl">
+        {settings.heroTitle}
+      </h1>
+      {
+        settings.heroLead && (
+          <p class="mt-5 max-w-xl text-base leading-relaxed text-body sm:text-lg">
+            {settings.heroLead}
+          </p>
+        )
+      }
+      <div class="mt-8 flex flex-wrap gap-3">
+        {
+          wa && (
+            <a
+              href={wa}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bg-accent px-6 py-3 text-sm font-semibold text-onaccent transition-opacity hover:opacity-90"
+            >
+              {settings.ctaPrimary ?? "Escríbenos por WhatsApp"}
+            </a>
+          )
+        }
+        <a
+          href="#servicios"
+          class="border border-line px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-ink/40"
+        >
+          {settings.ctaSecondary ?? "Ver servicios"}
+        </a>
+      </div>
+    </div>
+
+    {
+      settings.heroImage && (
+        <div class="lg:col-span-5">
+          <img
+            src={urlFor(settings.heroImage).width(900).height(700).url()}
+            alt={settings.heroImage.alt ?? ""}
+            width="900"
+            height="700"
+            class="h-auto w-full border border-line object-cover"
+          />
+        </div>
+      )
+    }
+  </div>
+</section>

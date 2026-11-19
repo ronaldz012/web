@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Paletas curadas. El valor elegido en Sanity (siteSettings.theme)
+   se aplica como data-theme en <html>. Tres combinaciones pensadas:
+   nada de degradados ni transparencias — tinta, papel cálido, líneas
+   de 1px y un único acento apagado.
+   ───────────────────────────────────────────────────────────── */
+:root,
+[data-theme="verde"] {
+  --t-ink: #252f21;      /* verde tinta (evoca al SIN) */
+  --t-body: #343a40;
+  --t-paper: #f8f9fa;
+  --t-card: #ffffff;
+  --t-line: #e2e5dc;
+  --t-sage: #d8e9d2;
+  --t-accent: #b0563b;   /* terracota */
+  --t-onaccent: #ffffff;
+  --t-onink: #f4f2ee;
+}
+
+[data-theme="navy"] {
+  --t-ink: #1c2b3a;
+  --t-body: #3a4656;
+  --t-paper: #faf8f4;
+  --t-card: #ffffff;
+  --t-line: #e3dfd6;
+  --t-sage: #efe9dc;
+  --t-accent: #a87e3d;   /* dorado apagado */
+  --t-onaccent: #ffffff;
+  --t-onink: #f4f2ee;
+}
+
+[data-theme="tinta"] {
+  --t-ink: #1a1a18;
+  --t-body: #3e3d3a;
+  --t-paper: #f6f2ea;
+  --t-card: #fffdf9;
+  --t-line: #e4ddcf;
+  --t-sage: #f0eadc;
+  --t-accent: #8c6a3f;
+  --t-onaccent: #ffffff;
+  --t-onink: #f4f2ee;
+}
+
+/* El mapping va "inline": las utilidades referencian la variable en
+   tiempo de ejecución, así el data-theme cambia la paleta completa. */
+@theme inline {
+  --color-ink: var(--t-ink);
+  --color-body: var(--t-body);
+  --color-paper: var(--t-paper);
+  --color-card: var(--t-card);
+  --color-line: var(--t-line);
+  --color-sage: var(--t-sage);
+  --color-accent: var(--t-accent);
+  --color-onaccent: var(--t-onaccent);
+  --color-onink: var(--t-onink);
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--t-paper);
+  color: var(--t-body);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--t-sage);
+}

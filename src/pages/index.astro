@@ -1,16 +1,56 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import TrustStrip from "../components/TrustStrip.astro";
+import Services from "../components/Services.astro";
+import Process from "../components/Process.astro";
+import Team from "../components/Team.astro";
+import Results from "../components/Results.astro";
+import Faq from "../components/Faq.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import WhatsAppFab from "../components/WhatsAppFab.astro";
+import { fetchSite, waLink } from "../lib/sanity";
+
+const data = await fetchSite();
+const s = data.settings;
+// El esqueleto publicado existe pero no tiene contenido real: tratamos
+// "configuración sin titular" como sitio todavía sin publicar.
+const hasContent = Boolean(s?.heroTitle);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+{
+  !hasContent ? (
+    <Layout title="Demo web">
+      <main class="mx-auto max-w-2xl px-6 py-24">
+        <h1 class="font-display text-3xl font-medium text-ink">Contenido pendiente de publicar</h1>
+        <p class="mt-4 text-sm leading-relaxed text-body">
+          El sitio carga desde Sanity y todavía no hay contenido publicado para este
+          sitio. Abre el Studio, publica la configuración y los documentos, y
+          reconstruye.
+        </p>
+      </main>
+    </Layout>
+  ) : (
+    <Layout
+      title={s.seoTitle ?? s.name ?? "Demo web"}
+      description={s.seoDescription}
+      theme={s.theme ?? "verde"}
+    >
+      <Navbar settings={s} />
+      <main>
+        <Hero settings={s} />
+        <TrustStrip settings={s} />
+        <Services settings={s} services={data.services} />
+        <Process settings={s} />
+        <Team settings={s} team={data.team} />
+        <Results settings={s} cases={data.cases} testimonials={data.testimonials} />
+        <Faq settings={s} faqs={data.faqs} />
+        <Contact settings={s} />
+      </main>
+      <Footer settings={s} />
+      <WhatsAppFab whatsapp={s.contact?.whatsapp} />
+    </Layout>
+  )
+}

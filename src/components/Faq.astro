@@ -1,0 +1,37 @@
+---
+import type { SiteSettings, SiteData } from "../lib/sanity";
+
+interface Props {
+  settings: SiteSettings;
+  faqs: SiteData["faqs"];
+}
+
+const { settings, faqs } = Astro.props;
+const label = settings.labels?.faq ?? "Preguntas frecuentes";
+---
+
+{
+  faqs.length > 0 && (
+    <section id="faq" class="border-b border-line">
+      <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
+        <h2 class="font-display text-2xl font-medium text-ink sm:text-3xl">{label}</h2>
+        <div class="mt-8">
+          {faqs.map((f) => (
+            <details class="group border-b border-line">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 py-4 text-left font-medium text-ink">
+                {f.question}
+                <span
+                  aria-hidden="true"
+                  class="shrink-0 text-accent transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <p class="pb-4 text-sm leading-relaxed text-body">{f.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
