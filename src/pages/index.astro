@@ -42,10 +42,10 @@ const hasContent = Boolean(s?.heroTitle);
         <Hero settings={s} />
         <TrustStrip settings={s} />
         <Services settings={s} services={data.services} />
+        <Contact settings={s} />
         <Team settings={s} team={data.team} />
         <Results settings={s} cases={data.cases} testimonials={data.testimonials} />
         <Faq settings={s} faqs={data.faqs} />
-        <Contact settings={s} />
       </main>
       <Footer settings={s} />
       <WhatsAppFab whatsapp={s.contact?.whatsapp} />
