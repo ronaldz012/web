@@ -34,4 +34,11 @@ const href = waLink(whatsapp, "Hola, quiero consultar por sus servicios.");
   .whatsapp-fab {
     bottom: max(1rem, env(safe-area-inset-bottom));
   }
+  /* En desktop sube a media altura del borde derecho: integrado al contenido,
+     no pegado a la esquina. */
+  @media (min-width: 1024px) {
+    .whatsapp-fab {
+      bottom: 30vh;
+    }
+  }
 </style>

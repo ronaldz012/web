@@ -18,12 +18,10 @@ const labels = {
   contact: settings.labels?.contact ?? "Contacto",
 };
 
+// Topbar mínima: solo lo que un visitante en frío necesita.
 const links = [
   ["#servicios", labels.services],
-  ["#proceso", labels.process],
   ["#estudio", labels.team],
-  ["#resultados", labels.results],
-  ["#faq", labels.faq],
   ["#contacto", labels.contact],
 ];
 
@@ -44,13 +42,6 @@ const wa = settings.contact?.whatsapp
           />
         ) : (
           <span class="font-display text-xl font-semibold text-ink">{settings.name}</span>
-        )
-      }
-      {
-        settings.sectorTitle && (
-          <span class="hidden text-xs font-medium uppercase tracking-[0.14em] text-body/60 lg:inline">
-            {settings.sectorTitle}
-          </span>
         )
       }
     </a>

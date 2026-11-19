@@ -12,7 +12,7 @@ const c = settings.contact ?? {};
 const wa = c.whatsapp ? waLink(c.whatsapp, "Hola, quiero consultar por sus servicios.") : null;
 const digits = (c.whatsapp ?? "").replace(/\D/g, "");
 
-// WhatsApp en formato legible: 59170000000 → +591 70000000
+// WhatsApp en formato legible: 59174112065 → +591 74112065
 const waPretty = digits.length > 3
   ? `+${digits.slice(0, digits.length - 8)} ${digits.slice(-8)}`
   : digits;
@@ -56,7 +56,6 @@ const waPretty = digits.length > 3
                 </a>
               </li>
             )}
-            {c.phone && <li class="text-ink">{c.phone}</li>}
             {c.email && (
               <li>
                 <a href={`mailto:${c.email}`} class="text-ink underline-offset-4 hover:text-accent hover:underline">
@@ -90,6 +89,27 @@ const waPretty = digits.length > 3
       </div>
 
       <form id="contact-form" data-wa={digits} class="space-y-4">
+        <!-- Dos modos: consulta libre o agendar cita. Ambos abren WhatsApp con
+             el mensaje armado; cero backend. -->
+        <div class="flex gap-2" role="group" aria-label="Tipo de contacto">
+          <button
+            type="button"
+            data-mode="consulta"
+            aria-pressed="true"
+            class="mode-tab bg-ink px-4 py-2 text-sm font-medium text-onink"
+          >
+            Consulta
+          </button>
+          <button
+            type="button"
+            data-mode="cita"
+            aria-pressed="false"
+            class="mode-tab border border-line px-4 py-2 text-sm font-medium text-body transition-colors hover:border-ink/40"
+          >
+            Agendar cita
+          </button>
+        </div>
+
         <div>
           <label for="f-name" class="text-xs font-medium uppercase tracking-[0.14em] text-body/60">
             Nombre
@@ -103,7 +123,8 @@ const waPretty = digits.length > 3
             class="mt-1 w-full border border-line bg-card px-4 py-3 text-sm text-ink focus:border-accent focus:outline-none"
           />
         </div>
-        <div>
+
+        <div data-panel="consulta">
           <label for="f-msg" class="text-xs font-medium uppercase tracking-[0.14em] text-body/60">
             Tu consulta
           </label>
@@ -115,6 +136,36 @@ const waPretty = digits.length > 3
             class="mt-1 w-full border border-line bg-card px-4 py-3 text-sm text-ink focus:border-accent focus:outline-none"
           />
         </div>
+
+        <div data-panel="cita" class="hidden space-y-4">
+          <div>
+            <label for="f-day" class="text-xs font-medium uppercase tracking-[0.14em] text-body/60">
+              Día
+            </label>
+            <select
+              id="f-day"
+              class="mt-1 w-full border border-line bg-card px-4 py-3 text-sm text-ink focus:border-accent focus:outline-none"
+            >
+              <!-- Opciones: próximos 5 días hábiles, generadas en el navegador -->
+            </select>
+          </div>
+          <div>
+            <label for="f-band" class="text-xs font-medium uppercase tracking-[0.14em] text-body/60">
+              Franja horaria
+            </label>
+            <select
+              id="f-band"
+              class="mt-1 w-full border border-line bg-card px-4 py-3 text-sm text-ink focus:border-accent focus:outline-none"
+            >
+              <option>Mañana (9:00–12:30)</option>
+              <option>Tarde (15:00–18:30)</option>
+            </select>
+          </div>
+          <p class="text-xs text-body/60">
+            Te confirmamos la hora exacta por WhatsApp. Podés venir a la oficina.
+          </p>
+        </div>
+
         <button
           type="submit"
           class="w-full bg-accent px-6 py-3 text-sm font-semibold text-onaccent transition-opacity hover:opacity-90"
@@ -142,12 +193,71 @@ const waPretty = digits.length > 3
 <script>
   const form = document.getElementById("contact-form");
   if (form) {
+    const tabs = Array.from(form.querySelectorAll(".mode-tab"));
+    const panels = {
+      consulta: form.querySelector('[data-panel="consulta"]'),
+      cita: form.querySelector('[data-panel="cita"]'),
+    };
+    const nameInput = document.getElementById("f-name");
+    const msgInput = document.getElementById("f-msg");
+    const daySelect = document.getElementById("f-day");
+    const bandSelect = document.getElementById("f-band");
+
+    // Próximos 5 días hábiles (lun–vie) para el selector de cita.
+    const fmt = new Intl.DateTimeFormat("es-BO", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+    const added = [];
+    for (let i = 1; added.length < 5 && i < 15; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() + i);
+      const day = d.getDay();
+      if (day === 0 || day === 6) continue;
+      const label = fmt.format(d);
+      const opt = document.createElement("option");
+      opt.value = label;
+      opt.textContent = label.charAt(0).toUpperCase() + label.slice(1);
+      daySelect.appendChild(opt);
+      added.push(label);
+    }
+
+    let mode = "consulta";
+    function setMode(next) {
+      mode = next;
+      for (const tab of tabs) {
+        const active = tab.dataset.mode === mode;
+        tab.setAttribute("aria-pressed", String(active));
+        tab.classList.toggle("bg-ink", active);
+        tab.classList.toggle("text-onink", active);
+        tab.classList.toggle("border", !active);
+        tab.classList.toggle("border-line", !active);
+        tab.classList.toggle("text-body", !active);
+      }
+      for (const [key, panel] of Object.entries(panels)) {
+        if (!panel) continue;
+        panel.classList.toggle("hidden", key !== mode);
+      }
+      msgInput.required = mode === "consulta";
+    }
+    for (const tab of tabs) {
+      tab.addEventListener("click", () => setMode(tab.dataset.mode));
+    }
+
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      const name = document.getElementById("f-name").value.trim();
-      const message = document.getElementById("f-msg").value.trim();
+      const name = nameInput.value.trim();
+      let text;
+      if (mode === "cita") {
+        text =
+          "Hola, soy " + name + ". Quisiera una cita el " +
+          daySelect.value + " por la " +
+          bandSelect.value.toLowerCase() + ". ¿Me confirman la hora exacta?";
+      } else {
+        text = "Hola, soy " + name + ". " + msgInput.value.trim();
+      }
       const digits = form.getAttribute("data-wa") || "";
-      const text = "Hola, soy " + name + ". " + message;
       window.open(
         "https://wa.me/" + digits + "?text=" + encodeURIComponent(text),
         "_blank",
