@@ -13,7 +13,7 @@ const wa = settings.contact?.whatsapp
 
 <section id="inicio" class="border-b border-line">
   <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-12">
-    <div class="lg:col-span-7">
+    <div class="reveal lg:col-span-7">
       {
         settings.sectorTitle && (
           <p class="text-xs font-medium uppercase tracking-[0.18em] text-body/60">
@@ -55,7 +55,7 @@ const wa = settings.contact?.whatsapp
 
     {
       settings.heroImage && (
-        <div class="lg:col-span-5">
+        <div class="reveal lg:col-span-5" style="--reveal-delay: 150ms;">
           <img
             src={urlFor(settings.heroImage).width(900).height(700).url()}
             alt={settings.heroImage.alt ?? ""}

@@ -27,7 +27,7 @@ const paragraphs = (settings.about ?? "").split(/\n\s*\n/).filter(Boolean);
 ---
 
 <section id="estudio" class="border-b border-line">
-  <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+  <div class="reveal mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
     <h2 class="font-display text-2xl font-medium text-ink sm:text-3xl">{title}</h2>
     <div class="mt-6 max-w-2xl space-y-4 text-sm leading-relaxed text-body sm:text-base">
       {paragraphs.map((p) => <p>{p}</p>)}
@@ -35,8 +35,11 @@ const paragraphs = (settings.about ?? "").split(/\n\s*\n/).filter(Boolean);
 
     <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
-        team.map((member) => (
-          <li class="border border-line bg-card p-6">
+        team.map((member, i) => (
+          <li
+            class="reveal border border-line bg-card p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/40 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+            style={`--reveal-delay: ${i * 80}ms;`}
+          >
             {member.photo ? (
               <img
                 src={urlFor(member.photo).width(160).height(160).url()}

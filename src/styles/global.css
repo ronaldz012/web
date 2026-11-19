@@ -91,6 +91,31 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ── Movimiento: reveal al hacer scroll ───────────────────────
+   Solo opacity/transform (rápido en celulares). El patrón `.js`
+   garantiza que sin JavaScript todo se ve normal. ──────────── */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 ::selection {
   background: var(--t-sage);
 }

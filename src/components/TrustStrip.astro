@@ -12,9 +12,9 @@ const stats = settings.stats ?? [];
 {
   stats.length > 0 && (
     <section class="border-b border-line bg-sage/50" aria-label="Credenciales">
-      <div class="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-10 sm:grid-cols-3 sm:px-6">
-        {stats.map((stat) => (
-          <div>
+      <div class="reveal mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-10 sm:grid-cols-3 sm:px-6">
+        {stats.map((stat, i) => (
+          <div class="reveal" style={`--reveal-delay: ${i * 90}ms;`}>
             <p class="font-display text-4xl font-medium text-ink sm:text-5xl">{stat.value}</p>
             <p class="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-body/70">
               {stat.label}
