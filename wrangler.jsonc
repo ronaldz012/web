@@ -1,0 +1,11 @@
+{
+  // Sitio 100% estático: solo assets, sin script de Worker. Las peticiones de
+  // assets estáticos son gratis e ilimitadas en Workers.
+  "name": "demo-contadores",
+  "compatibility_date": "2026-11-19",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
